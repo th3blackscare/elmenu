@@ -1,5 +1,6 @@
 import 'package:bubble_animated_tabbar/bubble_animated_tabbar.dart';
 import 'package:elmenu/src/BLoC.dart';
+import 'package:elmenu/src/pages/SearchPageView.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -81,23 +82,27 @@ class _HomePageViewState extends State<HomePageView> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ((Platform.isAndroid)||(Platform.isIOS))?FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => WebViewPage("Online Chat")));
-        },
-        child: FaIcon(FontAwesomeIcons.commentDots),
+      floatingActionButton: (Platform.isWindows)
+          ?null
+          :FloatingActionButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => WebViewPage("Online Chat")));
+            },
+          child: FaIcon(FontAwesomeIcons.commentDots),
         //splashColor: Colors.red.shade300,
-      ):null,
+          ),
       body: Container(
-          child: Column(children: [
+          child: Column(
+            children: [
             Container(
               width: MediaQuery.of(context).size.width,
               height: 60,
-              child: Column(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(" Crinkle",style: TextStyle(fontFamily: 'Baloo2Bold',fontWeight: FontWeight.bold,fontSize: 30,color: Theme.of(context).primaryColor),)
+                  Text(" Crinkle",style: TextStyle(fontFamily: 'Baloo2Bold',fontWeight: FontWeight.bold,fontSize: 30,color: Theme.of(context).primaryColor),),
+                  IconButton(icon: FaIcon(FontAwesomeIcons.search), onPressed: (){showSearch(context: context, delegate: SearchPageView(menuItems: widget.bloc.Menu));})
                 ],
               ),
             ),

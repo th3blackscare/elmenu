@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:elmenu/src/DataModels/Menu.dart';
+import 'package:elmenu/src/DataModels/MenuCategory.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -18,25 +19,66 @@ class MenuPageView extends StatefulWidget {
 }
 
 class _MenuPageViewState extends State<MenuPageView> {
+  String init ;
+  String selected;
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Divider(height: 1,thickness: 1,),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Container(
+              height: 35,
+              child: Center(
+                child: StreamBuilder<UnmodifiableListView<MenuCategory>>(
+                    stream: widget.bLoC.Category,
+                    initialData: UnmodifiableListView<MenuCategory>([]),
+                    builder: (context, snapshot) {
+                      //var ls = init == null?snapshot.data.toList():snapshot.data.where((e) => e.category==init).toList();
+                      return Center(
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: snapshot.data.map((e) => Padding(
+                            padding: const EdgeInsets.only(left:3.0,right: 3.0),
+                            child: FlatButton(
+                              onPressed: () { setState(() {
+                                selected =e.category_name;
+                                init = e.category_name;
+                              }); },
+                              child: Center(child: Text(e.category_name,style: TextStyle(color: selected==e.category_name?Colors.white:null,fontFamily: 'Cairo',fontWeight: FontWeight.bold),)),
+                              color: selected==e.category_name?Colors.red.shade300:null,
+                              shape: RoundedRectangleBorder(  borderRadius: BorderRadius.circular(18.0),
+                                  //side: BorderSide(color: Colors.red)
+                                ),
+                            ),
+                          ),).toList(),
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          ),
+          SizedBox(height: 2,),
+          Divider(height: 1,thickness: 1,),
           Expanded(
             child: StreamBuilder<UnmodifiableListView<MenuItem>>(
                 stream: widget.bLoC.Menu,
                 initialData: UnmodifiableListView<MenuItem>([]),
-                builder: (context, snapshot)=> ListView(
-                  children: snapshot.data.map(menu_item).toList(),
-                )
-            ),
+                builder: (context, snapshot) {
+                  var ls = init == null?snapshot.data.toList():snapshot.data.where((e) => e.category==init).toList();
+                      return ListView(
+                        children: ls.map(menu_item).toList(),
+                      );
+                    }),
           )
         ],
       ),
     );
   }
+
 
   Widget menu_item(MenuItem item){
     return Padding(
@@ -144,5 +186,4 @@ class _MenuPageViewState extends State<MenuPageView> {
       ),
     );
   }
-
 }
