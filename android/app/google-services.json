@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "726211034877",
+    "firebase_url": "https://elmenu-aefc7.firebaseio.com",
+    "project_id": "elmenu-aefc7",
+    "storage_bucket": "elmenu-aefc7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726211034877:android:7ce58b05decac651454894",
+        "android_client_info": {
+          "package_name": "com.gadeve.elmenu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726211034877-jebl0fmqpgmp13kumi0uqoe562pmdll7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gadeve.elmenu",
+            "certificate_hash": "89596bbc632fd39d17ab74eed93968d2c5f516fc"
+          }
+        },
+        {
+          "client_id": "726211034877-nci12kvvmtmp8abfmnfn49j1134gpg0c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDugLzUMuKIzSAmf_GoqjA8m1Ux1EVcotw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726211034877-nci12kvvmtmp8abfmnfn49j1134gpg0c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
