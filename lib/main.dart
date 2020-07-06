@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   BLoC bloc = BLoC();
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Crinkle',
@@ -49,7 +50,7 @@ class AfterSplash extends StatelessWidget {
 //        statusBarIconBrightness: Brightness.dark
 //      ),
 //    );
-    SystemChrome.setEnabledSystemUIOverlays([]);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
