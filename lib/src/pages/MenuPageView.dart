@@ -1,10 +1,12 @@
 import 'dart:collection';
 
+import 'package:elmenu/src/Config/Config.dart';
 import 'package:elmenu/src/DataModels/Menu.dart';
 import 'package:elmenu/src/DataModels/MenuCategory.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../BLoC.dart';
@@ -48,8 +50,8 @@ class _MenuPageViewState extends State<MenuPageView> {
                                 selected =e.category_name;
                                 init = e.category_name;
                               }); },
-                              child: Center(child: Text(e.category_name,style: TextStyle(color: selected==e.category_name?Colors.white:null,fontFamily: 'Cairo',fontWeight: FontWeight.bold),)),
-                              color: selected==e.category_name?Colors.red.shade300:null,
+                              child: Text(e.category_name,style: TextStyle(color: selected==e.category_name?Colors.white:null,fontFamily: 'Cairo',fontWeight: FontWeight.bold),),
+                              color: selected==e.category_name?Colors.red.shade300:Colors.grey.shade400.withOpacity(0.45),
                               shape: RoundedRectangleBorder(  borderRadius: BorderRadius.circular(18.0),
                                   //side: BorderSide(color: Colors.red)
                                 ),
@@ -69,8 +71,13 @@ class _MenuPageViewState extends State<MenuPageView> {
                 initialData: UnmodifiableListView<MenuItem>([]),
                 builder: (context, snapshot) {
                   var ls = init == null?snapshot.data.toList():snapshot.data.where((e) => e.category==init).toList();
-                      return ListView(
-                        children: ls.map(menu_item).toList(),
+                      return Config.view == 1
+                        ? ListView(
+                          children: ls.map(getView).toList(),
+                        )
+                        : GridView.count(
+                            crossAxisCount: 2,
+                            children: ls.map(getView).toList(),
                       );
                     }),
           )
@@ -79,6 +86,16 @@ class _MenuPageViewState extends State<MenuPageView> {
     );
   }
 
+  Widget getView(MenuItem item){
+    switch(Config.view){
+      case 1:
+        return menu_item(item);
+        break;
+      case 2:
+        return menu_item_cercile(item);
+        break;
+    };
+  }
 
   Widget menu_item(MenuItem item){
     return Padding(
@@ -186,4 +203,44 @@ class _MenuPageViewState extends State<MenuPageView> {
       ),
     );
   }
+
+  Widget menu_item_cercile(MenuItem item){
+    return Padding(
+      padding: const EdgeInsets.only(top:7.0,bottom: 7.0, left: 8.0,right: 8.0),
+      child: InkWell(
+        onTap: (){
+
+        },
+        child: Column(
+          children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                image: DecorationImage(
+                  image: NetworkImage(item.item_photo),
+                  fit: BoxFit.cover,
+                )
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(width: 3,color: Colors.red.shade300),
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+              ),
+              child: Text(
+                ' ${item.item_name} ',
+                overflow: TextOverflow.fade,
+                softWrap: false,
+                style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 14,fontWeight: FontWeight.bold,fontFamily: 'Cairo'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 }

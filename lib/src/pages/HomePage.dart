@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'MenuPageView.dart';
+import 'OffersPageView.dart';
 import 'WebViewe.dart';
 
 class HomePageView extends StatefulWidget {
@@ -31,8 +32,8 @@ class _HomePageViewState extends State<HomePageView> with SingleTickerProviderSt
       'tabPadding': EdgeInsets.fromLTRB(10, 6, 10, 6)
     },
     {
-      'icon': FontAwesomeIcons.newspaper,
-      'title': 'News',
+      'icon': FontAwesomeIcons.percentage,
+      'title': 'Offers',
       'iconSize':23,
       'color': Color.fromRGBO(18, 140, 126, 0.25),
       'textColor': Color.fromRGBO(6, 125, 111, 1),
@@ -94,20 +95,31 @@ class _HomePageViewState extends State<HomePageView> with SingleTickerProviderSt
       body: Container(
           child: Column(
             children: [
+            SizedBox(height: 10,),
             Container(
+              padding: EdgeInsets.only(right: 5,left: 5),
               width: MediaQuery.of(context).size.width,
-              height: 60,
+              height: 55,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(" Crinkle",style: TextStyle(fontFamily: 'Baloo2Bold',fontWeight: FontWeight.bold,fontSize: 30,color: Theme.of(context).primaryColor),),
-                  IconButton(icon: FaIcon(FontAwesomeIcons.search), onPressed: (){showSearch(context: context, delegate: SearchPageView(menuItems: widget.bloc.Menu));})
+                  Text("Crinkle",style: TextStyle(fontFamily: 'Baloo2Bold',fontWeight: FontWeight.bold,fontSize: 30,color: Theme.of(context).primaryColor),),
+                  Container(
+                      height: 45,
+                      width: 45,
+                      //color: Colors.black,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.grey.shade400.withOpacity(0.45),
+                      ),
+                      child: IconButton(icon: FaIcon(FontAwesomeIcons.search),color: Colors.grey,onPressed: (){showSearch(context: context, delegate: SearchPageView(menuItems: widget.bloc.Menu));
+                      }))
                 ],
               ),
             ),
             AnimatedTabbar(
-              padding:EdgeInsets.only(left: 4, top: 6, right: 4, bottom: 6),
+              padding:EdgeInsets.only(left: 4, right: 4, bottom: 6,top: 6),
               containerDecoration: getBoxDecoration(),
               currentIndex: _currentIndex,
               onTap: onTabTapped,
@@ -118,7 +130,7 @@ class _HomePageViewState extends State<HomePageView> with SingleTickerProviderSt
                 width: MediaQuery.of(context).size.width,
                 //height: 200,
                 child: TabBarView(
-                  children: [ MenuPageView(bLoC: widget.bloc,),getPage(),],
+                  children: [ MenuPageView(bLoC: widget.bloc,),OffersPageView(bLoC: widget.bloc),],
                   controller: tabController,
                 ),
               ),

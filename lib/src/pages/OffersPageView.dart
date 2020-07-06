@@ -1,64 +1,39 @@
-import 'dart:async';
 import 'dart:collection';
 
-import 'package:elmenu/src/DataModels/Menu.dart';
+import 'package:elmenu/src/DataModels/Offer.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class SearchPageView extends SearchDelegate<MenuItem>{
-  final Stream<UnmodifiableListView<MenuItem>> menuItems;
+import '../BLoC.dart';
+
+class OffersPageView extends StatefulWidget {
+  BLoC bLoC;
 
 
-  SearchPageView({Key key,this.menuItems});
+  OffersPageView({Key key,this.bLoC});
+  @override
+  _OffersPageViewState createState() => _OffersPageViewState();
+}
+
+class _OffersPageViewState extends State<OffersPageView> {
 
   @override
-  List<Widget> buildActions(BuildContext context) {
-    return[
-      IconButton(
-        icon: FaIcon(FontAwesomeIcons.backspace),
-        onPressed: (){
-          query = '';
-        },
-      )
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: FaIcon(FontAwesomeIcons.chevronCircleLeft),
-      onPressed: (){
-        close(context, null);
-      },
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<UnmodifiableListView<offer>>(
+                stream: widget.bLoC.Offer,
+                initialData: UnmodifiableListView<offer>([]),
+                builder: (context, snapshot) => ListView(
+                    children: snapshot.data.map(menu_item).toList(),
+          )))
+        ],
+      ),
     );
   }
 
-  @override
-  Widget buildResults(BuildContext context) {
-    return Container();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return StreamBuilder<UnmodifiableListView<MenuItem>>(
-      stream: menuItems,
-      builder: (context, AsyncSnapshot<UnmodifiableListView<MenuItem>> snapshot){
-        if(!snapshot.hasData){
-          return Center(
-            child: Text('لا يوجد بيانات'),
-          );
-        }
-
-        final results = snapshot.data.where((s) => (s.item_name.toLowerCase().contains(query))||(s.category.toLowerCase().contains(query)));
-
-        return ListView(
-          children: results.map<Widget>((e) => menu_item(e, context)).toList(),
-        );
-      },
-    );
-  }
-
-  Widget menu_item(MenuItem item, BuildContext context){
+  Widget menu_item(offer item){
     return Padding(
       padding: const EdgeInsets.only(top:7.0,bottom: 7.0, left: 8.0,right: 8.0),
       child: InkWell(
@@ -77,14 +52,14 @@ class SearchPageView extends SearchDelegate<MenuItem>{
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Hero(
-                tag: item.item_id,
+                tag: item.offer_title,
                 child: Container(
                   width: 120,
                   height: 120,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomLeft: Radius.circular(20)),
                       image: DecorationImage(
-                          image: NetworkImage(item.item_photo),
+                          image: NetworkImage(item.offer_photo),
                           fit: BoxFit.cover
                       )
                   ),
@@ -110,7 +85,7 @@ class SearchPageView extends SearchDelegate<MenuItem>{
                                   borderRadius: BorderRadius.all(Radius.circular(5))
                               ),
                               child: Text(
-                                ' ${item.item_name} ',
+                                ' ${item.offer_title} ',
                                 overflow: TextOverflow.fade,
                                 softWrap: false,
                                 style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 14,fontWeight: FontWeight.bold,fontFamily: 'Cairo'),
@@ -120,7 +95,7 @@ class SearchPageView extends SearchDelegate<MenuItem>{
                               height: 7,
                             ),
                             Text(
-                              item.item_details,
+                              item.offer_detalis,
                               overflow: TextOverflow.fade,
                               softWrap: true,
                               maxLines: 2,
@@ -138,7 +113,7 @@ class SearchPageView extends SearchDelegate<MenuItem>{
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              "price: ${item.item_price}",
+                              item.is_discount=='0'?"price: ${item.offer_price}":"Discount: ${item.offer_discount}",
                               //overflow: TextOverflow.fade,
                               maxLines: 1,
                               softWrap: false,

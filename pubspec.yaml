@@ -46,6 +46,9 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
 
+  assets:
+    - assets/splash.flr
+
   fonts:
     - family: MyFlutterApp
       fonts:

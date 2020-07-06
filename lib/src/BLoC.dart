@@ -2,25 +2,31 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:elmenu/src/APIConfig.dart';
+
+
+import 'package:elmenu/src/Config/APIConfig.dart';
 import 'package:http/http.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'DataModels/Menu.dart';
+import 'DataModels/Offer.dart';
 import 'DataModels/MenuCategory.dart';
 
 
 class BLoC{
 
   final _menuSubject = BehaviorSubject<UnmodifiableListView<MenuItem>>();
-
   final _categorySubject = BehaviorSubject<UnmodifiableListView<MenuCategory>>();
+  final _offerSubject = BehaviorSubject<UnmodifiableListView<offer>>();
 
   List<MenuItem> _menuItems = List<MenuItem>();
   List<MenuCategory> _categoryItems = List<MenuCategory>();
+  List<offer> _offersList = List<offer>();
+
   Stream<UnmodifiableListView<MenuItem>> get Menu => _menuSubject.stream;
   Stream<UnmodifiableListView<MenuCategory>> get Category => _categorySubject.stream;
-  
+  Stream<UnmodifiableListView<offer>> get Offer => _offerSubject.stream;
+
   Future<Null> _getMenuItemsList() async{
     List<MenuItem> list;
     Response respose = await get(Uri.encodeFull(APIConfig.getMenu));
@@ -39,12 +45,24 @@ class BLoC{
     _categoryItems = list;
   }
 
+  Future<Null> _getOffersList() async{
+    List<offer> list;
+    Response response = await get(Uri.encodeFull(APIConfig.getOffers));
+    final jsonResponse = json.decode(response.body);
+    final jsonOffers = jsonResponse['offer'] as List;
+    list = jsonOffers.map<offer>((e) => offer.fromJson(e)).toList();
+    _offersList = list;
+  }
+
   BLoC(){
     _getCategoryList().then((_){
       _categorySubject.add(UnmodifiableListView(_categoryItems));
     });
     _getMenuItemsList().then((_){
       _menuSubject.add(UnmodifiableListView(_menuItems));
+    });
+    _getOffersList().then((_){
+      _offerSubject.add(UnmodifiableListView(_offersList));
     });
   }
   

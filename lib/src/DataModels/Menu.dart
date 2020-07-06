@@ -13,13 +13,16 @@ class MenuItem{
 
   String category;
 
+  String isPopular;
+
   MenuItem(
       {this.item_id,
       this.item_name,
       this.item_details,
       this.item_price,
       this.item_photo,
-      this.category
+      this.category,
+      this.isPopular
       });
   factory MenuItem.fromJson(Map<String, dynamic> paresdJson){
     return MenuItem(
@@ -28,7 +31,8 @@ class MenuItem{
         item_details : paresdJson['item_details'],
         item_price : paresdJson['item_price'],
         item_photo : paresdJson['item_photo'],
-        category : paresdJson['category']
+        category : paresdJson['category'],
+        isPopular : paresdJson['isPopular']
     );
   }
 }

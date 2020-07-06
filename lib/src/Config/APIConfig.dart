@@ -4,4 +4,5 @@ class APIConfig{
   static final String Base = 'http://41.39.103.8/v1/api/';
   static final String getMenu = Base+'getMenu';
   static final String getMenuCategory = Base+'getMenuCategory';
+  static final String getOffers = Base+'getOffers';
 }
