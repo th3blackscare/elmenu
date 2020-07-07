@@ -54,6 +54,22 @@ class BLoC{
     _offersList = list;
   }
 
+  // ignore: non_constant_identifier_names
+  Future<Null> Refresh() async{
+    _offersList.clear();
+    _menuItems.clear();
+    _categoryItems.clear();
+    _getCategoryList().then((_){
+      _categorySubject.add(UnmodifiableListView(_categoryItems));
+    });
+    _getMenuItemsList().then((_){
+      _menuSubject.add(UnmodifiableListView(_menuItems));
+    });
+    _getOffersList().then((_){
+      _offerSubject.add(UnmodifiableListView(_offersList));
+    });
+  }
+
   BLoC(){
     _getCategoryList().then((_){
       _categorySubject.add(UnmodifiableListView(_categoryItems));
