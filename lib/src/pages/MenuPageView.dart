@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:elmenu/src/Config/Config.dart';
 import 'package:elmenu/src/DataModels/Menu.dart';
 import 'package:elmenu/src/DataModels/MenuCategory.dart';
+import 'package:elmenu/src/Widgets/FloatedCard.dart';
 import 'package:floating_pullup_card/floating_layout.dart';
 import 'package:floating_pullup_card/pullup_card.dart';
 import 'package:floating_pullup_card/types.dart';
@@ -42,7 +43,7 @@ class _MenuPageViewState extends State<MenuPageView> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: widget.bLoC.Refresh,
+      onRefresh: widget.bLoC.RefreshMenu,
       child: FloatingPullUpCardLayout(
         dismissable: true,
         onOutsideTap: (){
@@ -141,6 +142,7 @@ class _MenuPageViewState extends State<MenuPageView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Divider(height: 1,thickness: 1,),
+              // Category Buttons List Container
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Container(
@@ -176,13 +178,23 @@ class _MenuPageViewState extends State<MenuPageView> {
               ),
               SizedBox(height: 2,),
               Divider(height: 1,thickness: 1,),
+              // Page Body (Menu Items Grid View List)
               Expanded(
                 child: StreamBuilder<UnmodifiableListView<MenuItem>>(
                     stream: widget.bLoC.Menu,
                     initialData: UnmodifiableListView<MenuItem>([]),
                     builder: (context, snapshot) {
                       var ls = init == null?snapshot.data.toList():snapshot.data.where((e) => e.category==init).toList();
-                      return Config.view == 1
+                      return ls.isEmpty
+                          ? Container(child: Center(child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text('Error!\nPlease Check Your Internet Connection!',style: TextStyle(color: Colors.grey,fontSize: 17),),
+                                    FlatButton(onPressed: (){widget.bLoC.RefreshMenu();}, child: Text("Retry",style: TextStyle(color: Colors.white,fontSize: 15),),color: Colors.grey,)
+                                  ],
+                                )))
+                          : Config.view == 1
                           ? ListView(
                         children: ls.map(getView).toList(),
                       )
@@ -382,85 +394,6 @@ class _MenuPageViewState extends State<MenuPageView> {
 
 }
 
-class CustomCard extends StatelessWidget {
-  final Widget dragHandle;
-  final BoxConstraints constraints;
-  final Widget body;
-  final bool beingDragged;
 
-  const CustomCard({
-    Key key,
-    @required this.dragHandle,
-    @required this.constraints,
-    @required this.beingDragged,
-    @required this.body,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Material(
-          elevation: beingDragged ? 6 : 20,
-          borderOnForeground: true,
-          clipBehavior: Clip.hardEdge,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            width: 300,
-            child: dragHandle,
-          ),
-        ),
-        Expanded(
-          child: Container(
-            margin: EdgeInsets.only(bottom: 100),
-            child: Material(
-              elevation: beingDragged ? 18 : 4,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15),
-              ),
-              child: Container(
-                //padding: EdgeInsets.all(15),
-                width: 300,
-                child: body,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CustomDrag extends StatelessWidget {
-  final bool beingDragged;
-  const CustomDrag({
-    Key key,
-    this.beingDragged,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      curve: Curves.easeInCirc,
-      duration: Duration(milliseconds: 300),
-      padding: EdgeInsets.all(14),
-      width: double.infinity,
-      decoration: BoxDecoration(
-          color: beingDragged ? Colors.red[200] : Colors.red[400],
-          //borderRadius: BorderRadius.circular(15)
-      ),
-      child: Center(
-        child: FaIcon(FontAwesomeIcons.infoCircle,color: Colors.white,),
-      ),
-    );
-  }
-}
 
 

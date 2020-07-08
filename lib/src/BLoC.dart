@@ -55,8 +55,7 @@ class BLoC{
   }
 
   // ignore: non_constant_identifier_names
-  Future<Null> Refresh() async{
-    _offersList.clear();
+  Future<Null> RefreshMenu() async{
     _menuItems.clear();
     _categoryItems.clear();
     _getCategoryList().then((_){
@@ -65,6 +64,10 @@ class BLoC{
     _getMenuItemsList().then((_){
       _menuSubject.add(UnmodifiableListView(_menuItems));
     });
+  }
+
+  // ignore: non_constant_identifier_names
+  Future<Null> RefreshOffers() async{
     _getOffersList().then((_){
       _offerSubject.add(UnmodifiableListView(_offersList));
     });
