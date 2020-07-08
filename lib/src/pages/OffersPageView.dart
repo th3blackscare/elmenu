@@ -31,7 +31,7 @@ class _OffersPageViewState extends State<OffersPageView> {
 
   String title = '';
   String discrption='';
-  String photo='';
+  String photo='https://picsum.photos/200/300';
   String price='';
   bool is_discount = false;
 

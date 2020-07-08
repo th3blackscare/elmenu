@@ -37,7 +37,7 @@ class _MenuPageViewState extends State<MenuPageView> {
 
   String title = '';
   String discrption='';
-  String photo='';
+  String photo='https://picsum.photos/200/300';
   String price='';
 
   @override
