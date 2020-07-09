@@ -1,0 +1,8 @@
+[27-Sep-2019 21:12:54 UTC] PHP Fatal error:  Uncaught Error: Using $this when not in object context in /home/arabitga/otlobly.me/soon/inv.php:1
+Stack trace:
+#0 {main}
+  thrown in /home/arabitga/otlobly.me/soon/inv.php on line 1
+[27-Sep-2019 21:13:00 UTC] PHP Fatal error:  Uncaught Error: Using $this when not in object context in /home/arabitga/otlobly.me/soon/inv.php:1
+Stack trace:
+#0 {main}
+  thrown in /home/arabitga/otlobly.me/soon/inv.php on line 1
