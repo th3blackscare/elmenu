@@ -17,7 +17,12 @@ class MyApp extends StatelessWidget {
   BLoC bloc = BLoC();
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+        statusBarIconBrightness: Brightness.dark
+      ),
+    );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Crinkle',
